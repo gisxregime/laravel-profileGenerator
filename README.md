@@ -1,4 +1,4 @@
-#Profile Generator
+# Profile Generator
 
 Simple academic project for Web Development using Laravel.
 
