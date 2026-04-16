@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Profile;
 use Illuminate\Http\Request;
 
 class ProfileController extends Controller
@@ -9,8 +10,12 @@ class ProfileController extends Controller
    
     public function index()
     {
-        $profiles = session('profiles', []);
-        return view('index', compact('profiles'));
+        $profiles = Profile::query()->latest()->get();
+
+        return view('index', [
+            'profiles' => $profiles,
+            'message' => request()->query('message'),
+        ]);
     }
 
   
@@ -29,9 +34,7 @@ class ProfileController extends Controller
             'hobbies.min' => 'Please select at least 5 hobbies.',
         ]);
 
-        $profiles = session('profiles', []);
-
-        $profiles[] = [
+        Profile::query()->create([
             'name'      => $validated['name'],
             'age'       => $validated['age'],
             'program'   => $validated['program'],
@@ -39,17 +42,18 @@ class ProfileController extends Controller
             'gender'    => $validated['gender'],
             'hobbies'   => $validated['hobbies'],
             'biography' => $validated['biography'] ?? '',
-        ];
+        ]);
 
-        session(['profiles' => $profiles]);
+        $message = urlencode('Profile for "' . $validated['name'] . '" has been saved!');
 
-        return redirect('/')->with('success', 'Profile for "' . $validated['name'] . '" has been saved!');
+        return redirect('/?message=' . $message);
     }
 
     
     public function clearAll()
     {
-        session()->forget('profiles');
-        return redirect('/')->with('success', 'All profiles have been deleted.');
+        Profile::query()->delete();
+
+        return redirect('/?message=' . urlencode('All profiles have been deleted.'));
     }
 }

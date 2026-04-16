@@ -1,7 +1,7 @@
 <x-layout>
 
-    @if(session('success'))
-        <div class="alert alert-success">{{ session('success') }}</div>
+    @if(!empty($message))
+        <div class="alert alert-success">{{ $message }}</div>
     @endif
 
     @if($errors->any())
@@ -117,7 +117,7 @@
                 </div>
                 <div class="card-body">
 
-                    @if(count($profiles) > 0)
+                    @if($profiles->isNotEmpty())
                         <form method="POST" action="/profile/clear" class="mb-3">
                             @csrf
                             @method('DELETE')
@@ -127,7 +127,7 @@
                             </button>
                         </form>
 
-                        @foreach(array_reverse($profiles) as $profile)
+                        @foreach($profiles as $profile)
                             <x-profile-card :profile="$profile" />
                         @endforeach
                     @else

@@ -2,13 +2,23 @@
 
 Simple academic project for Web Development using Laravel.
 
-This app helps me practice Laravel basics like routing, controllers, Blade views, form validation, and session handling.
+This app helps me practice Laravel basics like routing, controllers, Blade views, form validation, and database handling.
 
 ## What It Does
 
 1. Accepts profile information through a form
 2. Validates user input
-3. Saves profiles in session
+3. Saves profiles in a MySQL database
 4. Displays generated profiles
 5. Clears all saved profiles
+
+## Database Setup (phpMyAdmin)
+
+1. Create a MySQL database named `profileGenerator`
+2. Copy `.env.example` to `.env`
+3. Run migrations:
+
+```bash
+php artisan migrate
+```
 
